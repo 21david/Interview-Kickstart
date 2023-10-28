@@ -11,7 +11,6 @@ class BinaryTreeNode:
         self.left = None
         self.right = None
 """
-
 '''
 This approaches traverses the tree DFS style, keeping
 a list of all the elements it has visited so far. When
@@ -44,9 +43,6 @@ def all_paths_of_a_binary_tree(root):
     return dfs(root, [], [])
 
 def dfs(root, curr_path, paths):
-    if not root:
-        return
-    
     if root.left is None and root.right is None:
         curr_path.append(root.value)
         paths.append(curr_path.copy())
@@ -54,11 +50,10 @@ def dfs(root, curr_path, paths):
         return paths
     
     curr_path.append(root.value)    
-    dfs(root.left, curr_path, paths)
-    curr_path.pop()
-    
-    curr_path.append(root.value)
-    dfs(root.right, curr_path, paths)
+    if root.left:
+        dfs(root.left, curr_path, paths)
+    if root.right:
+        dfs(root.right, curr_path, paths)
     curr_path.pop()
     
     return paths
