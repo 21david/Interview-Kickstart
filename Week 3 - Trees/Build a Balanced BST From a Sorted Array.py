@@ -32,20 +32,6 @@ def build_balanced_bst(a):
     
     if length == 0:
         return None
-    elif length == 1:
-        return BinaryTreeNode(a[0])
-    elif length == 2:
-        child = BinaryTreeNode(a[0])
-        parent = BinaryTreeNode(a[1])
-        parent.left = child
-        return parent
-    elif length == 3:
-        parent = BinaryTreeNode(a[1])
-        left_child = BinaryTreeNode(a[0])
-        right_child = BinaryTreeNode(a[2])
-        parent.left = left_child
-        parent.right = right_child
-        return parent
     
     middle_index = len(a) // 2
     root_element = a[middle_index]
