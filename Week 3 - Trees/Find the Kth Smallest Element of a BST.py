@@ -27,17 +27,15 @@ def kth_smallest_element(root, k):
     Returns:
      int32
     """
-    return to_array(root)[k-1]
-
-def to_array(root):
     array = []
-  
-    def helper(root):
+    
+    def to_array(root):
         if root is None:
             return
-        helper(root.left)
+        to_array(root.left)
         array.append(root.value)
-        helper(root.right)
-      
-    helper(root)
-    return array
+        to_array(root.right)
+        
+    to_array(root)
+    
+    return array[k-1]
