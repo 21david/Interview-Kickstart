@@ -52,10 +52,9 @@ def check_if_symmetric(root):
     
 def is_palindrome(arr):
     for i in range(len(arr)//2):
-        if arr[i] is None:
-            if arr[-(i+1)] is not None:
-                return False
-        else:
-            if arr[i].value != arr[-(i+1)].value:
-                return False
+        l, r = arr[i], arr[-(i+1)]
+        if l is None and r is None:
+            continue
+        elif l is None or r is None or l.value != r.value:
+            return False
     return True
