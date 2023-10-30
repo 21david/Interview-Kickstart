@@ -58,3 +58,13 @@ def is_palindrome(arr):
         elif l is None or r is None or l.value != r.value:
             return False
     return True
+
+# Another way to write is_palindrome
+'''
+def is_palindrome(arr):
+    for i in range(len(arr)//2):
+        l, r = arr[i], arr[-(i+1)]
+        if (l and r and l.value != r.value) or ((not l or not r) and l != r):
+            return False
+    return True
+'''
