@@ -1,6 +1,14 @@
 '''
-This problem gives you an edge list, along with how many nodes there are in
-the graph, and asks you to turn it into an adjacency list.
+This problem gives you an edge list, like:
+[
+[0, 1],
+[1, 4],
+[1, 2],
+[1, 3],
+[3, 4]
+]
+along with the number of nodes in the graph, and asks you to turn it into an adjacency list
+with elements in each list sorted.
 '''
 
 def convert_edge_list_to_adjacency_list(n, edges):
