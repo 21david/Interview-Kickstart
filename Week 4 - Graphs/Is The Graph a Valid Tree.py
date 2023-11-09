@@ -5,7 +5,8 @@ The input is an integer, indicating how many nodes there are, and two
 arrays, edge_start and edge_end, where edge_start[i] is the origin of 
 an edge, and edge_end[i] is the destination of an edge, for all i.
 '''
- '''
+'''
+Solution 1:
 The number of edges needs to be 1 less than the number of nodes
 for there to be a possibility of the graph being a valid tree.
 If it is equal to or greater, then there is at least 1 cycle
@@ -60,6 +61,7 @@ def is_it_a_tree(node_count, edge_start, edge_end):
 
 
 '''
+Solution 2:
 Do a BFS, keeping track of how many tree edges are in the
 BFS tree, and compare that with the total number of edges.
 There should be as many tree edges as total edges. If there
@@ -110,6 +112,7 @@ def is_it_a_tree(node_count, edge_start, edge_end):
 
 
 '''
+Solution 3:
 Count number of edges and check how many connected components there are.
 If there is 1 CC and there are n-1 edges, where n is # of nodes,
 then it should be a valid tree. 
