@@ -42,7 +42,7 @@ def max_product_from_cut_pieces(N):
         max_prod = 0
         for cut in range(2, n):
             rest = n - cut
-            max_prod = max(max_prod, max(cut * rest, cut * memo[rest]))
+            max_prod = max(max_prod, cut * rest, cut * memo[rest])
             
         memo[n] = max_prod
             
