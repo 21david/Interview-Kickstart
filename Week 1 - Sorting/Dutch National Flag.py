@@ -26,8 +26,9 @@ def dutch_flag_sort(balls):
             balls[i], balls[gIdx] = balls[gIdx], balls[i]
             gIdx += 1
         elif balls[i] == "R":
-            balls[i], balls[gIdx] = balls[gIdx], balls[i]
-            balls[gIdx], balls[rIdx] = balls[rIdx], balls[gIdx]
+            balls[i] = balls[gIdx]
+            balls[gIdx] = balls[rIdx]
+            balls[rIdx] = "R"
             rIdx += 1
             gIdx += 1
             
