@@ -1,3 +1,15 @@
+"""
+Problem: Given an unsorted array, find all the subsets of size 3 that sum to 0 (order does not matter).
+
+Example input
+{
+"arr": [10, 3, -4, 1, -6, 9]
+}
+
+Output:
+["10,-4,-6", "3,-4,1"]
+"""
+
 def find_zero_sum(arr):
     """
     Args:
