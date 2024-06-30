@@ -68,3 +68,64 @@ def two_sum(arr, target):
                 ans.add((complement_num, key))
                 
     return ans
+
+
+#############################################
+# Another solution:
+def find_zero_sum_2(arr):
+    """
+    Args:
+     arr(list_int32)
+    Returns:
+     list_str
+    """
+    
+    '''
+    O(N^2) approach:
+    For each element, perform a O(N) Two Sum algorithm on the
+    rest of the elements (the two numbers must add to the current
+    number times -1). If we sort the algorithm, we can perform
+    the Two Sum algorithm with two pointers, which avoids
+    using extra memory.
+    Optimization: for there to be three numbers that add to 0,
+    There must be negative numbers and positive numbers, OR
+    they must all be 0s. So we can check the first and last elements
+    to see what the array looks like. If they are either both
+    negative or positive, then there wont be an answer and we can 
+    return an empty array. If they are both 0s, we can return 
+    [[0,0,0]]
+    '''
+    
+    arr.sort()
+    
+    if len(arr) <= 2 or arr[0] < 0 and arr[-1] < 0 or arr[0] > 0 and arr[-1] > 0:
+           return []
+    elif arr[0] == 0 and arr[-1] == 0:
+        return ['0,0,0']
+    
+    triplets = set()
+    
+    for i in range(len(arr)-2):
+        target = -arr[i]
+        
+        if target < 0:
+            # if current number is positive
+            # there will not be any solutions
+            break
+        
+        # two sum algorithm on the rest of the elements
+        k = len(arr)-1
+        j = i + 1
+        while j < k:
+            sum = arr[j] + arr[k]
+            
+            if sum == target:  # found a triplet
+                triplets.add(f'{arr[i]},{arr[j]},{arr[k]}')
+                j += 1
+                k -= 1
+            elif sum > target:
+                k -= 1
+            else:
+                j += 1
+            
+    return list(triplets)
