@@ -1,4 +1,18 @@
 """
+This problem gives you an array of numbers (may contain duplicates) and asks you to return an array of the 
+k most frequent elements in that array. If there are multiple solutions, any one is valid.
+
+Example
+{
+"arr": [1, 2, 3, 2, 4, 3, 1],
+"k": 2
+}
+
+Output:
+[3, 1]
+"""
+
+"""
 Solution 1
 Quick select approach
 """
@@ -40,7 +54,7 @@ def find_top_k_frequent_elements(arr, k):
     
     return ans
     
-# Sorting in decending
+# Sorting in decending order
 def quick_select(nums, t, s, e):
     if s >= e:
         return
@@ -59,8 +73,9 @@ def partition(nums, t, s, e):
         return
     
     # Quick select using frequencies
-    # i = random.randint(s, e)
-    # nums[i], nums[s] = nums[s], nums[i]
+    # Pick random pivot to reduce likelihood of worst case scenario
+    i = random.randint(s, e)
+    nums[i], nums[s] = nums[s], nums[i]
     
     # Lomuto partition
     a = s
@@ -73,9 +88,8 @@ def partition(nums, t, s, e):
     nums[s], nums[a] = nums[a], nums[s]
             
     # a is the index of the pivot's final position
-    # which can be used for the net quick select iteration
+    # which can be used for the next quick select iteration
     return a
-
 
 
 
@@ -83,7 +97,6 @@ def partition(nums, t, s, e):
 Solution 2
 Counting sort approach
 """
-
 def find_top_k_frequent_elements_2(arr, k):
     """
     Args:
@@ -116,6 +129,9 @@ def find_top_k_frequent_elements_2(arr, k):
     freq_dict (dictionary)
     freq_arr (array)
     ans (array, for the final answer)
+
+    Time complexity: O(N) because we only make linear passes over the data structures,
+    which have at most length N+1. Auxiliary space complexity: O(N) for the data structures.
     """
     freq_dict = {}
     for n in arr:
