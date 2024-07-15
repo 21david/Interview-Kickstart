@@ -29,7 +29,7 @@ def find_top_k_frequent_elements(arr, k):
     quick select can be used. First, we count the frequencies of
     each element and store that in a multiset. Then, we use quick select, 
     using the frequencies, to get the k most frequent elements.
-    The time complexity of this entire operation should be O(N).
+    The average time complexity of this entire operation should be O(N).
     The auxiliary space complexity will be O(N) for the multiset.
     """
     # Count frequencies
