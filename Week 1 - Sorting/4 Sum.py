@@ -1,5 +1,6 @@
 """
-Problem: Given an unsorted array (of integers) and a target integer number, find all the subsets of size 4 (quadruples) that sum to the target (order does not matter).
+Problem: Given an unsorted array (of integers) and a target integer number, find all the subsets of size 4 
+(quadruples) that sum to the target (order does not matter).
 
 Example input:
 {
