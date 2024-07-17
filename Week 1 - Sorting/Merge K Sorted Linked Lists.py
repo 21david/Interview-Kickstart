@@ -163,7 +163,13 @@ class LinkedListNode:
         self.value = value
         self.next = None
 """
-from heapq import heappush as push, heappop as pop
+from heapq import heappush as push, heappop as pop, heapify
+
+# Monkey patch a __lt__ (lesser than) function for the min-heap to use
+def lt(self, other):
+    return self.value < other.value
+
+LinkedListNode.__lt__ = lt
 
 def merge_k_lists_3(lists):
     """
@@ -177,16 +183,25 @@ def merge_k_lists_3(lists):
     linked list. We will repeatedly use this to get the next
     smallest element and build our final sorted linked list one
     by one.
-    The items in this min heap will have to be pairs: the value
-    of the element, and the index of the list that it came from.
-    This will allow us to get the next element from that list so that
-    we continually have the left-most element of each linked list.
+    Small optimization: When the algorithm has combined all lists
+    except the last one, that last one can just be appended to the
+    combined list, because it is guaranteed to be sorted and to be
+    greater than all the other elements. In the worst case, this
+    can save a lot of time. For example, if the last list had 1000
+    elements, it would take one operation to append instead of 1000.
+    Or if there is only one linked list, then it will just be returned.
+    
+    Time complexity: O(n * log k), because in the worst case,
+    each element will be added and removed from the min-heap.
+    Adding and removing from the min-heap is O(log k).
+    
+    Auxiliary space complexity: O(k), because the heap will store
+    k elements at most. The linked list that is returned uses the
+    original nodes, so no new space is used for that.
     """
-    # Construct heap
-    heap = []
-    for i, l in enumerate(lists):
-        if l:
-            push(heap, (l.value, i))
+    # Construct heap, ignoring empty linked lists
+    heap = [l for l in lists if l]
+    heapify(heap)  # nodes 'heapified' using the lt function above
     
     # If there were no numbers, return None
     if not heap:
@@ -195,15 +210,24 @@ def merge_k_lists_3(lists):
     # Dummy node to append the rest of the nodes
     dummy = LinkedListNode(None)
     t = dummy # temp pointer to traverse the list as we add nodes
-        
+    
     # One by one, extract the minimum element from one of the linked lists
-    while heap:
-        smallest_val, list_idx = pop(heap)
-        t.next = lists[list_idx]
+    while len(heap) > 1:
+        # Add the next smallest element to the final linked list
+        smallest_ptr = pop(heap)
+        t.next = smallest_ptr
         t = t.next
-        lists[list_idx] = lists[list_idx].next
-        if lists[list_idx]:
-            push(heap, (lists[list_idx].value, list_idx))
+        
+        # Push the pointer for the smallest element forward 
+        # and add new element if it wasn't the last one
+        smallest_ptr = smallest_ptr.next
+        if smallest_ptr:
+            push(heap, smallest_ptr) 
+            
+    # When there is only one list left, it will be sorted, and all
+    # elements will be greater than the last element in the final linked
+    # list, so we can just append it instead of iterating through it
+    t.next = pop(heap)
     
     # Discard dummy node and return the final sorted linked list
     return dummy.next
