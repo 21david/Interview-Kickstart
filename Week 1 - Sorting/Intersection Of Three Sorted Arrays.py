@@ -12,8 +12,6 @@ Example
 
 Output:
 [1, 2, 2]
-
-
 """
 def find_intersection(arr1, arr2, arr3):
     """
@@ -30,7 +28,11 @@ def find_intersection(arr1, arr2, arr3):
     final array and push each pointer to the right by 1.
     Once at least one pointer is out of bounds, terminate.
     
-    Time complexity: O(min(n1, n2, n3))
+    Time complexity: O(n1 + n2 + n3). In the worst case, every element
+    of every array will need to be travered, regardless of array sizes.
+    For example, if the smallest array contains only one element that
+    is bigger than every other element, the other arrays will be fully
+    traversed.
     Auxililary space complexity: O(1) for the pointers and max_val
     Output space complexity: O(min(n1, n2, n3))
     """
