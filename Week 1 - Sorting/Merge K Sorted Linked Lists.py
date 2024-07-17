@@ -134,13 +134,16 @@ def merge_k_lists_2(lists):
             a = a.next
 
     # Create the final sorted linked list using the min heap
-    first = heappop(min_heap)
-    ans = LinkedListNode(first.value)
-    t = ans
+    head = heappop(min_heap)
+    t = head
     
     while min_heap:
         smallest = heappop(min_heap)
-        t.next = LinkedListNode(smallest.value)
+        t.next = smallest
         t = t.next
+    
+    # If the last node was pointing to another node, remove pointer
+    # to prevent loops
+    t.next = None
         
-    return ans
+    return head
