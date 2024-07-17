@@ -87,3 +87,60 @@ def find_smallest(lists, pointers):
         del lists[list_with_smallest]
         
     return smallest
+
+
+"""
+Solution 2:
+Use a min heap to sort all the elements.
+"""
+"""
+For your reference:
+class LinkedListNode:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+"""
+# import heapq
+from heapq import heappush, heappop
+
+# Monkey patch this function in to the LinkedListNode
+# class for the min_heap to be able to sort by value
+def __lt__(self, other):
+    return self.value < other.value
+    
+LinkedListNode.__lt__ = __lt__
+
+def merge_k_lists_2(lists):
+    """
+    Args:
+     lists(list_LinkedListNode_int32)
+    Returns:
+     LinkedListNode_int32
+    """
+    
+    # Remove empty lists
+    lists = [l for l in lists if l]
+    
+    # If there are no numbers, return None
+    if not lists:
+        return None
+        
+    # Add all numbers to the min heap
+    min_heap = []
+    for l in lists:
+        a = l
+        while a:
+            heappush(min_heap, a)
+            a = a.next
+
+    # Create the final sorted linked list using the min heap
+    first = heappop(min_heap)
+    ans = LinkedListNode(first.value)
+    t = ans
+    
+    while min_heap:
+        smallest = heappop(min_heap)
+        t.next = LinkedListNode(smallest.value)
+        t = t.next
+        
+    return ans
