@@ -147,3 +147,63 @@ def merge_k_lists_2(lists):
     t.next = None
         
     return head
+
+
+
+"""
+Solution 3
+This approach also uses a min-heap, but it only stores the left-most element
+of each linked list at a time. It builds the final sorted linked list one by
+one with the min-heap, until all elements are added.
+"""
+"""
+For your reference:
+class LinkedListNode:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+"""
+from heapq import heappush as push, heappop as pop
+
+def merge_k_lists_3(lists):
+    """
+    Args:
+     lists(list_LinkedListNode_int32)
+    Returns:
+     LinkedListNode_int32
+    """
+    """
+    Create a min-heap that stores the first element of each sorted
+    linked list. We will repeatedly use this to get the next
+    smallest element and build our final sorted linked list one
+    by one.
+    The items in this min heap will have to be pairs: the value
+    of the element, and the index of the list that it came from.
+    This will allow us to get the next element from that list so that
+    we continually have the left-most element of each linked list.
+    """
+    # Construct heap
+    heap = []
+    for i, l in enumerate(lists):
+        if l:
+            push(heap, (l.value, i))
+    
+    # If there were no numbers, return None
+    if not heap:
+        return None
+    
+    # Dummy node to append the rest of the nodes
+    dummy = LinkedListNode(None)
+    t = dummy # temp pointer to traverse the list as we add nodes
+        
+    # One by one, extract the minimum element from one of the linked lists
+    while heap:
+        smallest_val, list_idx = pop(heap)
+        t.next = lists[list_idx]
+        t = t.next
+        lists[list_idx] = lists[list_idx].next
+        if lists[list_idx]:
+            push(heap, (lists[list_idx].value, list_idx))
+    
+    # Discard dummy node and return the final sorted linked list
+    return dummy.next
