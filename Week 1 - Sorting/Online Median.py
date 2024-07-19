@@ -13,7 +13,7 @@ Example:
 Output:
 [3, 5, 5, 4]
 
-Iteration	  Stream	      Sorted Stream	  Median
+Iteration     Stream          Sorted Stream   Median
 1             [3]             [3]             3
 2             [3, 8]          [3, 8]          (3 + 8) // 2 => 5
 3             [3, 8, 5]       [3, 5, 8]       5
