@@ -65,18 +65,18 @@ partition_placements = []
 # l - the index of the current letter that is being considered
 # lines - a list of lines that separate the string 
 #         a line at index 1 represents a line between indices 0 and 1
-def helper(s, p, lines):
-    if p == len(s):  # reached the end of the string
+def helper(s, l, lines):
+    if l == len(s):  # reached the end of the string
         if partition_is_palindrome(s, lines + [len(s)]):
             partition_placements.append(lines) 
         return
     
     # concatenate current letter
-    helper(s, p+1, lines)
+    helper(s, l+1, lines)
     
     # start new partition at current letter
-    if partition_is_palindrome(s, lines + [p]): # this 'if' is the pruning part
-        helper(s, p+1, lines + [p])
+    if partition_is_palindrome(s, lines + [l]): # this 'if' is the pruning part
+        helper(s, l+1, lines + [l])
     
 # Check only if the last partition is a palindrome
 def partition_is_palindrome(s, lines):
