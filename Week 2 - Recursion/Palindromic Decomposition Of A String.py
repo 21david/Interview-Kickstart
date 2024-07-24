@@ -33,6 +33,12 @@ def generate_palindromic_decompositions(s):
     that and moving on to partitions that are or may become palindromes. This is 
     a backtracking approach where we 'prune' the branches of the tree that can't 
     lead to a solution. This solution will focus on this approach.
+
+    Time complexity (both approaches): O(2^N * N). The recursive calls double each
+    time, and are called a total of 2^(N-1) times (where N is the length of the 
+    string). Each call does not do O(1) work, it sometimes checks a fraction of
+    all the letters in the string, so each call can do O(N) work. Therefore, the
+    time complexity is O(2^N * N).
     """
     helper(s, 1, [])
     ans = []
