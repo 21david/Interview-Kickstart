@@ -39,6 +39,11 @@ def generate_palindromic_decompositions(s):
     string). Each call does not do O(1) work, it sometimes checks a fraction of
     all the letters in the string, so each call can do O(N) work. Therefore, the
     time complexity is O(2^N * N).
+
+    Space complexity: O(2^N * N). In the worse case, all 2^(N-1) possible
+    partitions are palindromes (input that consists of the same character repeated).
+    Each of these is N characters long, so the space complexity is O(2^N * N) in the
+    worst case.
     """
     helper(s, 1, [])
     ans = []
