@@ -150,3 +150,45 @@ def kth_smallest_element(root, k):
     
     # Return the final position of temp, which is the kth smallest value
     return temp.value
+
+
+"""
+Solution 3:
+Similar to solution 1, but it is optimized to stop once the answer
+is found.
+"""
+"""
+For your reference:
+class BinaryTreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+"""
+def kth_smallest_element(root, k):
+    """
+    Args:
+     root(BinaryTreeNode_int32)
+     k(int32)
+    Returns:
+     int32
+    """
+    ans = 0
+    
+    def traverse(node):
+        nonlocal k, ans
+        
+        if k > 0 and node.left:
+            traverse(node.left)
+        
+        k -= 1
+            
+        if k == 0:
+            ans = node.value
+        
+        if k > 0 and node.right:
+            traverse(node.right)
+        
+    traverse(root)
+    
+    return ans
