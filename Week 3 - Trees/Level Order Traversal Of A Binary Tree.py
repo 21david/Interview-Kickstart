@@ -19,6 +19,10 @@ Output:
 
 """
 """
+Solution 1:
+A BFS approach using a queue.
+"""
+"""
 For your reference:
 class BinaryTreeNode:
     def __init__(self, value):
@@ -73,4 +77,71 @@ def level_order_traversal(root):
         if node.right:
             q.append((node.right, level + 1))
         
+    return ans
+
+
+
+"""
+Solution 2
+This is basically the same approach as above, but it uses a single
+array that stores the nodes of a level, instead of a queue that
+stores the nodes with their levels. It has the same time and space
+complexities.
+"""
+"""
+For your reference:
+class BinaryTreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+"""
+def level_order_traversal_2(root):
+    """
+    Args:
+     root(BinaryTreeNode_int32)
+    Returns:
+     list_list_int32
+    """
+    '''
+    This is a BFS approach. It stores each level in an array, then repeatedly
+    uses that array to get the values for every node and then update itself to
+    represent the next level. The final answer is built as each level is processed.
+    
+    Time complexity: O(N) because each nodes is processed exactly once.
+    
+    Space complexity:
+        Input space complexity: O(N) for the binary tree
+        
+        Auxiliary space complexity: O(N) for the array that stores the level.
+        This array will store references to at most half of the nodes
+        in the tree  at one time (which would happen if it reaches the last 
+        level of a full binary tree).
+        
+        Output space complexity: O(N) for the array of array of values.
+    '''
+    
+    curr_level = [root]  # stores each level as we progress through the tree
+    ans = [[root.value]] # store the final values
+    
+    # Loop until we've reached a level that is completely empty
+    # (AKA until we've passed the last level in the tree)
+    while curr_level:
+        new_level = []
+        new_level_values = []
+        
+        # Proces each node in the current level/array and create a new array with the children
+        for node in curr_level:
+            if node.left:
+                new_level.append(node.left)
+                new_level_values.append(node.left.value)
+            if node.right:
+                new_level.append(node.right)
+                new_level_values.append(node.right.value)
+                
+        # Update the array to represent the next level, and build the answer array
+        curr_level = new_level
+        if new_level_values:
+            ans.append(new_level_values)
+    
     return ans
