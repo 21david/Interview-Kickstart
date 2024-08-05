@@ -20,6 +20,10 @@ the subtree on the right, for the same reason.
 
 Another way to think of the question is: How many subtrees (including single-value trees)
 can you draw a circle around (parent + any children it has) that consist of only one value?
+
+Equivalent to LeetCode problem:
+250. Count Univalue Subtrees (premium)
+https://leetcode.com/problems/count-univalue-subtrees
 '''
 
 """
