@@ -92,5 +92,61 @@ def find_single_value_trees(root):
             return node.value
         
     dfs(root)
-    
+
     return count
+
+
+
+'''
+Solution 2: DFS
+This solution is very similar to the one above, but written different. It doesn't use a
+global variable, it bubbles up the number of trees found as its doing the traversal and 
+computes the total uni-value trees at each node.
+
+The return type of the inner DFS function contains two values:
+1 - A boolean representing if the subtree is a uni-value tree or not
+2 - the total amount of uni-value subtrees within the given tree
+
+The counts increment as they go from the leaf nodes up to the root node in the DFS traversal, 
+and the root node computes and returns the total uni-value subtrees found.
+
+TC is O(N) because every node has to be visited once, in every type of input.
+
+SC is O(N) because we must keep track of the total uni-value subtrees found
+for every node, and a boolean. This would also happen in every type of input.
+'''
+def find_single_value_trees(root):
+    if not root:
+        return 0
+    
+    def dfs(node):
+        # DFS traversal
+        left_is_unival, left_count = dfs(node.left) if node.left else (False, 0)
+        right_is_unival, right_count = dfs(node.right) if node.right else (False, 0)
+        
+        # If it has both children
+        if node.left and node.right:
+            # If it is a uni-value tree, return True and the total count plus 1
+            if (left_is_unival and right_is_unival) and (node.value == node.left.value == node.right.value):
+                return True, left_count + right_count + 1
+            # Else, return False and the total count
+            # This will cause all trees above to also not count as uni-value trees
+            else:
+                return False, left_count + right_count
+        # Same logic as above but for nodes with 1 child
+        elif node.left:
+            if left_is_unival and (node.value == node.left.value):
+                return True, left_count + 1
+            else:
+                return False, left_count
+        elif node.right:
+            if right_is_unival and (node.value == node.right.value):
+                return True, right_count + 1
+            else:
+                return False, right_count
+        # Leaf nodes are uni-value trees, so return True and 1 for the count
+        else:
+            return True, 1
+    
+    # Return only the total count
+    return dfs(root)[1]
