@@ -462,7 +462,8 @@ them both up by 1 and repeat. When they both end up on the same node, that is
 their LCA node. This approach is more memory efficient than 1) above. 
 The solution below implements this approach.
 
-A tradeoff with this approach is that the original tree is modified. 
+A tradeoff with this approach is that the original tree is modified. See the next solution
+for a version of this that doesn't modify the original tree.
 
 Time complexity:
 	Best case: O(1). If both nodes are the root node, or one is the root and the other is
@@ -536,4 +537,94 @@ def lca(root, a, b):
             b = b.parent
     
     # Return the first node that they meet at
+    return a.value
+
+
+
+'''
+This is the same approach as above, but we store the parent references and levels for each node
+in a dictionary instead of on the actual nodes.
+
+Time complexity:
+	Best case: O(1). If both nodes are the root node, or one is the root and the other is
+ 	a direct child, it will always only do work for those nodes.
+
+  	Worst case: O(N). It may visit every node in the tree during the BFS, and then one
+	of the nodes may have to climb through almost every node to get to the other node,
+ 	if the tree is a linear chain of nodes.
+
+Auxilliary space complexity:
+	Best case: O(1). Same reason as time complexity.
+
+ 	Worst case: O(N). We may store information on every node (reference to parent and level)
+  	in the dictionary.
+'''
+from collections import namedtuple
+def lca(root, a, b):
+    """
+    Args:
+     root(BinaryTreeNode_int32)
+     a(BinaryTreeNode_int32)
+     b(BinaryTreeNode_int32)
+    Returns:
+     int32
+    """
+    nodes_found = 0
+    
+    # Each key in the dictionary represents a node. Its value is a tuple that contains
+    # a reference to its parent and its level. Named tuples make this easier to work with.
+    Node_info = namedtuple('node_info', ['parent', 'level'])
+    root_info = Node_info(None, 0)
+    nodes_info = {root: root_info}
+    
+    if root == a or root == b:
+        nodes_found += 1
+    
+    # BFS
+    # We will store the level along with each node. We could also only store the nodes
+    # and access their level using nodes_info, but that access has a worst case TC of O(N).
+    q = deque([(root, 0)])
+    
+    while q:
+        node, lvl = q.popleft()
+        
+        if node.left:
+            nodes_info[node.left] = Node_info(node, lvl+1)
+            
+            # Check for input nodes. If we found both, we
+            # can prevent unnecessary future work
+            if node.left == a or node.left == b:
+                nodes_found += 1
+                if nodes_found == 2:
+                    break
+                
+            q.append((node.left, lvl+1))
+            
+        if node.right:
+            nodes_info[node.right] = Node_info(node, lvl+1)
+            
+            # Check for input nodes again
+            if node.right == a or node.right == b:
+                nodes_found += 1
+                if nodes_found == 2:
+                    break
+                
+            q.append((node.right, lvl+1))
+            
+    # We have modified both nodes and all their ancestors
+    # Now we can go upwards to find the LCA
+    # Steps: Move the lower pointer to the same level as the other pointer
+    # then repeatedly check if they have met at their ancestor or move them up
+    while a != b:
+        a_info = nodes_info[a]
+        b_info = nodes_info[b]
+        if a_info.level > b_info.level:
+            a = a_info.parent 
+        elif b_info.level > a_info.level:
+            b = b_info.parent
+        else:
+            a = a_info.parent
+            b = b_info.parent
+    
+    # Return the value of the first node that they meet at
     return a.value
