@@ -2,6 +2,26 @@
 This problem gives you a binary tree and asks you to find the lowest common ancestor (LCA)
 of two nodes in the tree. The LCA of two nodes is the lowest node in the tree that is an
 ancestor of both, and a node can be an ancestor of itself.
+
+For example:
+
+       1
+     /    \
+    /      \
+   2        3
+ /   \     /  \
+4     5   6    8
+     / \
+    8   9
+
+LCA(8, 9) = 5
+The lowest common ancestor of nodes 8 and 9 is 5
+
+LCA(2, 5) = 2
+LCA(2, 3) = 1
+LCA(2, 8) = 1
+LCA(8, 8) = 8
+LCA(1, 1) = 1
 '''
 
 """
@@ -12,6 +32,7 @@ class BinaryTreeNode:
         self.left = None
         self.right = None
 """
+
 '''
 This is a bottom-up approach that traverses the whole tree one time, and for each node
 (and for each recursive call), it creates a left and a right variable, which stores
@@ -147,6 +168,86 @@ def lca(root, a, b):
     
     dfs(root)
     return lca[0].value
+
+
+
+'''
+This solution are based off of this logic:
+A node is the LCA if:
+    - It is one of the input nodes, and the other input node is in one of its subtrees
+    - It is not one of the input nodes, one input node is in its left subtree, and
+    the other input node is in its right subtree
+    - Both input nodes are the same
+
+We can do a recursive DFS, which, for every node, finds out how many of the input nodes
+are on the left, how many are on the right, and also considers if it is an input node.
+When we can verify one of the conditions above happened, we've found the LCA and we can
+cancel or prevent all other recursive calls.
+
+This solution is similar to the DFS one above, but slightly more optimal because it prevents 
+unnecessary calls earlier.
+
+Time complexity: O(N) because it will only process each node at most once.
+(Best case scenario is O(1)).
+
+Auxilliary space complexity: O(N) because we create 3 variables for every node we visit.
+(Best case scenario is O(1)).
+'''
+def lca(root, a, b):
+    """
+    Args:
+     root(BinaryTreeNode_int32)
+     a(BinaryTreeNode_int32)
+     b(BinaryTreeNode_int32)
+    Returns:
+     int32
+    """
+    # Edge case where both nodes are the same
+    if a == b:
+        return a.value
+        
+    # Keep track of how many nodes are yet to be found
+    nodes_left = 2
+    lca = None
+        
+    def dfs(node):
+        nonlocal nodes_left, lca
+        
+        is_input_node = node == a or node == b
+        if is_input_node:
+            nodes_left -= 1
+            
+        if nodes_left == 0:
+            # Prevent further tree traversal if the answer is found
+            return is_input_node
+        
+        left = dfs(node.left) if node.left else 0
+        
+        if is_input_node and left:
+            # Current node is LCA
+            lca = node
+            return 2
+        
+        if nodes_left == 0:
+            return left + is_input_node
+        
+        right = dfs(node.right) if node.right else 0
+        
+        if is_input_node and right:
+            # Current node is LCA
+            lca = node
+            return 2
+        
+        if left and right:
+            # Current node is LCA
+            lca = node
+            return 2
+ 
+        return left + right + is_input_node
+        
+    dfs(root)
+        
+    return lca.value
 
 
 
