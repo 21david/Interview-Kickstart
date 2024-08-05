@@ -46,15 +46,21 @@ that at the end.
 TC would be O(N) because every node would have to be visited once,
 for all types of input.
 
-SC would be O(N) because we need to store info for each node, including
-whether its left and right subtrees are uni-val or not, also for all
-types of input.
+SC would be:
+      Best case: O(logN) in the case where the tree is a complete binary tree, 
+      because the call stack would reach the height of the tree (logN) at the most,
+      and each call in the stack would use O(1) space.
+      
+      Worst case: O(N) in the case where the tree has only one node per level, 
+      because the call stack would reach the number of nodes at the most in this
+      case.
 
 I think this could also be written with booleans. Instead of returning
 a value for each call, we could return True if the tree was a uni-value
 tree or False otherwise. If a subtree is a uni-value tree, then we can
 just access its value and use it to compare with the current node's and 
-the other child's value. This is a slight optimization.
+the other child's value. This is a slight optimization. The next solution
+implements it this way.
 '''
 def find_single_value_trees(root):
     """
