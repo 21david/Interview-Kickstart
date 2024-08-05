@@ -172,7 +172,7 @@ def lca(root, a, b):
 
 
 '''
-This solution are based off of this logic:
+This solution is based off of this logic:
 A node is the LCA if:
     - It is one of the input nodes, and the other input node is in one of its subtrees
     - It is not one of the input nodes, one input node is in its left subtree, and
