@@ -187,11 +187,29 @@ cancel or prevent all other recursive calls.
 This solution is similar to the DFS one above, but slightly more optimal because it prevents 
 unnecessary calls earlier.
 
-Time complexity: O(N) because it will only process each node at most once.
-(Best case scenario is O(1)).
-
-Auxilliary space complexity: O(N) because we create 3 variables for every node we visit.
-(Best case scenario is O(1)).
+Time complexity:
+	Best case: O(1). If both input nodes are the same, OR the first two searched nodes
+	are the input nodes, it will stop processing the tree and return the answer.
+	
+	Worst case: O(N). Each node will be visited at most once. Once a node is found during
+	the DFS, the 1 that represents it will travel upwards with the left and right variables,
+	and the node will never be visited again.
+	In the worst case, if both nodes are on the lowest possible levels and as far right in 
+	the tree as possible, every node will be visited one time.
+        
+Space complexity:
+	Input space complexity:
+		Every case: O(N) for all the nodes and the two input nodes
+	
+	Auxiliary space complexity: 
+		Best case: O(1), same as time complexity reason. It will only store info for 1-2 nodes.
+	
+		Worst case: O(N). In the worst case, there will be a left and a right
+		variable initialized for each node, and the stack may reach a height equal to N if the
+		tree has only one node per level.
+	
+	Output space complexity: 
+		Every case: O(1) for the value of the LCA node.
 '''
 def lca(root, a, b):
     """
