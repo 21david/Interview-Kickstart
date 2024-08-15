@@ -15,6 +15,9 @@ maximum difference, which represents the maximum profit that can be achieved.
 
 If the maximum difference found is zero, it means no profit can be made from the input 
 array, so return -1. 
+
+TC: O(N)
+SC: O(N)
 '''
 def find_maximum_profit(arr):
     """
@@ -33,3 +36,28 @@ def find_maximum_profit(arr):
         maxs[i] = max_v
     
     return max(maxs[i] - arr[i] for i in range(len(arr))) or -1
+
+
+'''
+This version does it in place, modifying the original 
+array to save space and avoid using additional memory.
+
+TC: O(N)
+SC: O(1)
+'''
+def find_maximum_profit(arr):
+    """
+    Args:
+     arr(list_int32)
+    Returns:
+     int32
+    """
+    max_v = arr[-1]
+    max_p = 0
+    
+    for i in range(len(arr)-1, -1, -1):
+        max_v = max(max_v, arr[i])
+        arr[i] = max_v - arr[i]
+        max_p = max(max_p, arr[i])
+    
+    return max_p or -1
