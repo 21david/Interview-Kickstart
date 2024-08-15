@@ -61,3 +61,12 @@ def find_maximum_profit(arr):
         max_p = max(max_p, arr[i])
     
     return max_p or -1
+
+
+'''
+One line solution just for fun
+TC: O(N)
+SC: O(1)
+'''
+def find_maximum_profit(arr):
+    return max((max_v := max(max_v, arr[i+1]) if i < len(arr)-1 else arr[-1]) - arr[i] for i in range(len(arr)-1, -1, -1)) or -1
