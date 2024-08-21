@@ -86,7 +86,7 @@ def max_product_from_cut_pieces(n):
 
 
 '''
-We can solve this in O(1) time and space complexity using these formulas based 
+We can solve this in O(log(n)) time and O(1) space complexity using these formulas based 
 off of this pattern.
 '''
 def max_product_from_cut_pieces(n):
@@ -105,4 +105,4 @@ def max_product_from_cut_pieces(n):
     elif three_remainder == 1:
         return (3)**((n-4) // 3) * 4  # 4 represents 2 * 2
     else:
-        return (3)**(n // 3) * three_remainder
+        return (3)**(n // 3) * three_remainder  # a 2 could go here instead
