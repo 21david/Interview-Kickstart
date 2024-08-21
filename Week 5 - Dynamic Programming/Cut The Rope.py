@@ -1,7 +1,10 @@
 '''
+This is equivalent to
+https://leetcode.com/problems/integer-break/
+
 This problem gives you an integer N, which represents a rope length, which has to be "cut"
 at least once. It asks you to find the highest product possible of its cut lengths.
-For exampe, if N is 4, then the highest product of its cut lenghts is 2 * 2 = 4, because
+For example, if N is 4, then the highest product of its cut lenghts is 2 * 2 = 4, because
 the rope is cut into two pieces of length 2.
 '''
 
@@ -47,3 +50,59 @@ def max_product_from_cut_pieces(N):
         memo[n] = max_prod
             
     return memo[N]
+
+
+'''
+There is a clear pattern in all inputs that leads to a more efficient solution. 
+Every input number eventually gets broken down into a combination of threes and 
+twos to achieve the highest possible product. By breaking the input down into 
+as many threes as possible and filling in the remainder with twos, we can arrive 
+at the solution much quicker.
+'''
+def max_product_from_cut_pieces(n):
+    """
+    Args:
+     n(int32)
+    Returns:
+     int64
+    """
+    '''
+    After playing with the numbers, it seems that the highest product
+    comes from multiplying as many 3s as possible followed by 2s.
+    So the combination that has the most 3s and the fewest 2s possible, and
+    never any 1s, produces the answer.
+    '''
+    if n == 2: return 1
+    elif n == 3: return 2
+    
+    prod = 1
+    while n >= 5:
+        prod *= 3
+        n -= 3
+    
+    prod *= n
+    
+    return prod
+
+
+'''
+We can solve this in O(1) time and space complexity using these formulas based 
+off of this pattern.
+'''
+def max_product_from_cut_pieces(n):
+    """
+    Args:
+     n(int32)
+    Returns:
+     int64
+    """
+    if n == 2: return 1
+    elif n == 3: return 2
+    
+    three_remainder = n % 3
+    if three_remainder == 0:
+        return (3)**(n // 3)
+    elif three_remainder == 1:
+        return (3)**((n-4) // 3) * 4  # 4 represents 2 * 2
+    else:
+        return (3)**(n // 3) * three_remainder
